@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aperture Calculator - Photographer&#x27;s Best Friend</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">Photographer&#x27;s Best Friend</a></h1>
+        <nav>
+            <ul>
+                <li><a href="aperture-calculator.html">Aperture Calculator</a></li>
+                <li><a href="tutoring-services.html">Tutoring and Services</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Aperture Calculator</h1>
+        <p>Enter your lens&#x27;s lowest f-number (wide open aperture) to find the sharpest f-number range.</p>
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 1rem; margin: 3rem 0;">
+            <input type="text" id="fInput" placeholder="e.g. f/1.4 or 1.4" style="padding: 1rem; font-size: 1.2rem; border-radius: 12px; border: 3px solid #3498db; width: 250px; text-align: center; font-family: inherit;">
+            <button class="btn" onclick="calculateSharpest()">Calculate Sharpest Aperture</button>
+        </div>
+        <div id="result" style="font-size: 1.5rem; font-weight: 700; color: #2980b9; text-align: center; padding: 2rem; background: rgba(52,152,219,0.1); border-radius: 15px; min-height: 60px; margin: 0 auto; max-width: 600px;"></div>
+    </main>
+    <script>
+        const apertureMap = {
+            '0.95': 'f/1.8 – f/2.0',
+            '1.2': 'f/2.0 – f/2.8',
+            '1.4': 'f/2.8 – f/4',
+            '1.8': 'f/2.8 – f/4',
+            '2': 'f/2.8 – f/4',
+            '2.8': 'f/4 – f/5.6',
+            '3.5': 'f/5.6 – f/8',
+            '4': 'f/5.6 – f/8',
+            '5.6': 'f/8 – f/11',
+            '8': 'f/11 – f/13',
+            '11': 'f/13 – f/16',
+            '16': 'f/16 – f/18',
+            '22': 'f/22 (already diffraction-limited)',
+            '32': 'f/32 (noticeably soft from diffraction)'
+        };
+
+        function calculateSharpest() {
+            const input = document.getElementById('fInput').value.trim().toLowerCase().replace(/f\//g, '');
+            const num = parseFloat(input);
+            const resultDiv = document.getElementById('result');
+            
+            if (isNaN(num) || num <= 0) {
+                resultDiv.innerHTML = 'Please enter a valid f-number (e.g. 1.4 or f/1.4)';
+                return;
+            }
+            
+            let closest = '5.6'; // default
+            for (let key in apertureMap) {
+                const mapNum = parseFloat(key);
+                if (mapNum <= num) {
+                    closest = key;
+                } else {
+                    break;
+                }
+            }
+            
+            resultDiv.innerHTML = `For your lens f/${num.toFixed(1)}, use <strong>${apertureMap[closest]}</strong> for maximum sharpness!`;
+        }
+    </script>
+</body>
+</html>
